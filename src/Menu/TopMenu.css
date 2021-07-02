@@ -1,0 +1,23 @@
+.search__btn {
+  padding: 17px 20px;
+  border: none;
+  background-color: transparent;
+}
+.search__btn:hover {
+  background-color: rgb(181, 187, 224);
+  transition: ease 200ms;
+}
+.app__logo {
+  padding-top: 10px;
+  vertical-align: middle;
+  text-align: center;
+  width: 240px;
+}
+.text__left {
+  font-size: 30px;
+  font-weight: bolder;
+  color: rgb(136, 136, 136);
+}
+.text__right {
+  color: rgb(85, 85, 141);
+}
