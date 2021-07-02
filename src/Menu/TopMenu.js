@@ -20,9 +20,10 @@ function TopMenu(){
 
     const history = useHistory();
 
-    function sendInfo(){
-        var dropdown = document.getElementById("combo-box-demo");
-        var userName = dropdown.value;
+    function sendInfo(userName){
+        // var dropdown = document.getElementById("combo-box-demo");
+        // var userName = dropdown.value;
+        console.log(userName);
         history.push({
             pathname: '/',
             firstName: userName
@@ -41,7 +42,12 @@ function TopMenu(){
             <div>
             {data? <div  className="searchInput">
                 <Autocomplete
-                
+                onInputChange={(event,value)=>{
+                    sendInfo(value || "")
+                }}   
+                onChange={(event, value)=>{
+                    sendInfo(value?.firstName || "")
+                }}   
                 id="combo-box-demo"
                 options={data.getAllUsers}
                 getOptionLabel={(option) => option.firstName}
@@ -51,9 +57,9 @@ function TopMenu(){
                 </div> : <p>Loading</p>}
             
             </div>
-            <button onClick={sendInfo} className="search__btn">
+            {/* <button onClick={sendInfo} className="search__btn">
                 Search
-            </button>
+            </button> */}
         </div>
     );
 }

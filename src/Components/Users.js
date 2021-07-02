@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import UserCard from './UserCard'
 import { useQuery, gql, NetworkStatus } from '@apollo/client';
 import { makeStyles } from '@material-ui/core/styles';
@@ -36,13 +36,26 @@ function Users(props) {
     
     const searchedName = location.firstName;
     console.log(searchedName);
+    const [users, setUsers] = useState([]);
 
+    
 
     const classes = useStyles();
     //Passing query to useQuery hook to fetch data
     const { data, loading, error, networkStatus } = useQuery(ALL_USERS, { fetchPolicy: "cache-and-network" })
+    useEffect(() => {
+        if (!loading && data?.getAllUsers?.length) {
+                setUsers(data.getAllUsers);
+        }
+    }, [loading, data]);
 
-    
+    useEffect(()=>{
+        if (searchedName!==undefined){
+            setUsers(data.getAllUsers.filter(user => user.firstName.toLowerCase().includes(searchedName.toLowerCase())));      
+        }
+    },[searchedName])
+
+
     if (networkStatus === NetworkStatus['refetch'])
         return 'Refetching!';
     else if (loading)
@@ -50,15 +63,16 @@ function Users(props) {
             id="spinner" className={classes.root}><CircularProgress /></div>
     else if (error)
         return `Error! ${error}`;
-    else if (data){
-        console.log(data);
-    }
+    else if (data)
+        // console.log(data);
+
+
            
     return (
         <div className="is-scrollable-list">
             <div style={{ marginRight: "auto", marginLeft: "auto" }} className="row">
 
-                {data ? data.getAllUsers.map((item) => (
+                {users.length>0? users.map((item) => (
                     <div key={item.id} className="col-md-3">
                         <UserCard
                             key={item.id}
@@ -66,7 +80,7 @@ function Users(props) {
                         />
                     </div>
 
-                )) : 'Users list undefined...'}
+                )) : 'No users found'}
 
             </div>
 
